@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SecurePass - Our Service</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js" defer></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Navbar -->
+  <nav class="bg-blue-600 text-white shadow-lg fixed w-full top-0 left-0 z-50">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+
+      <!-- Center: Website Name -->
+      <a href="{{ url_for('mainpage') }}" class="absolute left-1/2 transform -translate-x-1/2 flex items-center space-x-2 hover:opacity-90">
+        <i class="fas fa-lock text-white text-2xl"></i>
+        <span class="text-2xl font-bold">SecurePass</span>
+      </a>
+
+      <!-- Right: Navigation Buttons -->
+      <div class="ml-auto flex space-x-4">
+        <a href="login.html" class="bg-white text-blue-500 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100">
+          Login
+        </a>
+        <a href="register.html" class="bg-white text-blue-500 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100">
+          Register
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Section -->
+  <main class="pt-28 px-6 max-w-5xl mx-auto space-y-10">
+    <h1 class="text-4xl font-bold text-center text-blue-600">Our Service</h1>
+
+    <section class="bg-white rounded-xl shadow-md p-8 space-y-6 border border-blue-100">
+      <p class="text-lg leading-relaxed">
+        <strong>SecurePass</strong> is a lightweight, privacy-focused password manager that lets users safely encrypt and manage their sensitive information. Whether you're storing passwords, generating strong credentials, or experimenting with RSA encryption. 
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+        <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-400">
+          <h2 class="text-xl font-semibold text-blue-600 mb-2">🔒 Local Encryption</h2>
+          <p>All encryption and decryption are done in your browser. We use RSA (public/private key) encryption for secure handling of your data.</p>
+        </div>
+
+        <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-400">
+          <h2 class="text-xl font-semibold text-blue-600 mb-2">🧠 User-Friendly</h2>
+          <p>The interface is clean, intuitive, and built with usability in mind — no clutter, just simplicity and speed.</p>
+        </div>
+
+        <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-400
