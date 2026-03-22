@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SecurePass - Frequency Analysis</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js" defer></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body style="font-family: Arial, sans-serif; background: #cff4f4; margin: 0; padding: 20px;">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-600 text-white shadow-lg fixed w-full top-0 left-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+  
+          <!-- Center: Website Name -->
+          <div class="absolute left-1/2 transform -translate-x-1/2">
+            <i class="fas fa-lock text-white text-2xl"></i>
+            <span class="text-2xl font-bold">SecurePass</span>
+          </div>
+  
+          <!-- Right: Navigation Buttons -->
+          <div class="ml-auto flex space-x-4">
+            <a href="dashboard.html" class="bg-white text-blue-500 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100">
+              Home
+            </a>
+          </div>
+        </div>
+    </nav>
+
+    <div class="mt-20"></div>
+    <h2 class="text-4xl font-bold text-blue-600 mb-8 text-center">
+        📊Frequency Analysis Tool
+      </h2>
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <label for="cipher" style="margin-bottom: 5px;">Text Before Substitution:</label>
+            <textarea id="cipher" rows="10" cols="76" style="width: 90%; max-width: 800px; padding: 10px; margin-bottom: 20px; font-size: 16px;">
+        DJ DK C QLXDWI WF SDGDU PCX. XLRLU KQCSLKBDQK, KJXDHDET FXWZ C BDIILE RCKL, BCGL PWE JBLDX FDXKJ GDSJWXO CTCDEKJ JBL LGDU TCUCSJDS LZQDXL. IYXDET JBL RCJJUL, XLRLU KQDLK ZCECTLI JW KJLCU KLSXLJ QUCEK JW JBL LZQDXL’K YUJDZCJL PLCQWE, JBL ILCJB KJCX, CE CXZWXLI KQCSL KJCJDWE PDJB LEWYTB QWPLX JW ILKJXWO CE LEJDXL QUCELJ. QYXKYLI RO JBL LZQDXL’K KDEDKJLX CTLEJK, QXDESLKK ULDC XCSLK BWZL CRWCXI BLX KJCXKBDQ, SYKJWIDCE WF JBL KJWULE QUCEK JBCJ SCE KCGL BLX QLWQUL CEI XLKJWXL FXLLIWZ JW JBL TCUCVO…
+            </textarea>
+
+            <button onclick="frequencyAnalysis(document.getElementById('cipher').value);" style="padding: 10px 20px; font-size: 16px; margin: 10px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">1. Start Frequency Analysis</button>
+
+            <table style="margin-top: 20px; border-collapse: collapse;">
+            <tbody>
+                <tr id="graphRow" style="vertical-align: bottom;"></tr>
+                <tr id="percentRow" style="text-align: center; font-weight: bold;"></tr>
+                <tr id="labelRow" style="text-align: center; font-weight: bold;"></tr>
+                <tr id="substitutionRow" style="text-align: center;"></tr>
+            </tbody>
+            </table>
+
+            <button onclick="substituteLetters();" style="padding: 10px 20px; font-size: 16px; margin: 20px 0 10px 0; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">2. Start Substitution</button>
+
+            <label for="plain" style="margin-bottom: 5px;">Text After Substitution:</label>
+            <textarea id="plain" rows="10" cols="76" style="width: 90%; max-width: 800px; padding: 10px; font-size: 16px;"></textarea>
+        </div>
+
+        <div class="w-[400px] max-w-full">
+            <table class="wikitable sortable floatright jquery-tablesorter">
+
+                <thead>
+                    <tr>
+                        <th rowspan="1" class="headerSort" tabindex="0" role="columnheader button" title="Sort ascending">Letter</th>
+                        <th colspan="2">Frequency</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td text-align="center"><b>A</b></td>
+                        <td text-align="right">8.2%</td>
+                        <td text-align="left"><span style="display:none;">8.2</span><div style="width:82px;height:2ex;background:#aaa;color:inherit;background:blue">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>B</b></td>
+                        <td text-align="right">1.5%</td>
+                        <td text-align="left"><span style="display:none;">1.5</span><div style="width:15px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>C</b></td>
+                        <td text-align="right">2.8%</td>
+                        <td text-align="left"><span style="display:none;">2.8</span><div style="width:28px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>D</b></td>
+                        <td text-align="right">4.3%</td>
+                        <td text-align="left"><span style="display:none;">4.3</span><div style="width:43px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>E</b></td>
+                        <td text-align="right">12.7%</td>
+                        <td text-align="left"><span style="display:none;">12.7</span><div style="width:127px;height:2ex;background:#aaa;color:inherit;background:blue">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>F</b></td>
+                        <td text-align="right">2.2%</td>
+                        <td text-align="left"><span style="display:none;">2.2</span><div style="width:22px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>G</b></td>
+                        <td text-align="right">2.0%</td>
+                        <td text-align="left"><span style="display:none;">2</span><div style="width:20px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>H</b></td>
+                        <td text-align="right">6.1%</td>
+                        <td text-align="left"><span style="display:none;">6.1</span><div style="width:61px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>I</b></td>
+                        <td text-align="right">7.0%</td>
+                        <td text-align="left"><span style="display:none;">7</span><div style="width:70px;height:2ex;background:#aaa;color:inherit;background:blue">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>J</b></td>
+                        <td text-align="right">0.15%</td>
+                        <td text-align="left"><span style="display:none;">0.15</span><div style="width:1.5px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>K</b></td>
+                        <td text-align="right">0.77%</td>
+                        <td text-align="left"><span style="display:none;">0.77</span><div style="width:7.7px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>L</b></td>
+                        <td text-align="right">4.0%</td>
+                        <td text-align="left"><span style="display:none;">4</span><div style="width:40px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>M</b></td>
+                        <td text-align="right">2.4%</td>
+                        <td text-align="left"><span style="display:none;">2.4</span><div style="width:24px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>N</b></td>
+                        <td text-align="right">6.7%</td>
+                        <td text-align="left"><span style="display:none;">6.7</span><div style="width:67px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>O</b></td>
+                        <td text-align="right">7.5%</td>
+                        <td text-align="left"><span style="display:none;">7.5</span><div style="width:75px;height:2ex;background:#aaa;color:inherit;background:blue">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>P</b></td>
+                        <td text-align="right">1.9%</td>
+                        <td text-align="left"><span style="display:none;">1.9</span><div style="width:19px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>Q</b></td>
+                        <td text-align="right">0.095%</td>
+                        <td text-align="left"><span style="display:none;">0.095</span><div style="width:0.95px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>R</b></td>
+                        <td text-align="right">6.0%</td>
+                        <td text-align="left"><span style="display:none;">6</span><div style="width:60px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>S</b></td>
+                        <td text-align="right">6.3%</td>
+                        <td text-align="left"><span style="display:none;">6.3</span><div style="width:63px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>T</b></td>
+                        <td text-align="right">9.1%</td>
+                        <td text-align="left"><span style="display:none;">9.1</span><div style="width:91px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>U</b></td>
+                        <td text-align="right">2.8%</td>
+                        <td text-align="left"><span style="display:none;">2.8</span><div style="width:28px;height:2ex;background:#aaa;color:inherit;background:blue">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>V</b></td>
+                        <td text-align="right">0.98%</td>
+                        <td text-align="left"><span style="display:none;">0.98</span><div style="width:9.8px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>W</b></td>
+                        <td text-align="right">2.4%</td>
+                        <td text-align="left"><span style="display:none;">2.4</span><div style="width:24px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>X</b></td>
+                        <td text-align="right">0.15%</td>
+                        <td text-align="left"><span style="display:none;">0.15</span><div style="width:1.5px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>Y</b></td>
+                        <td text-align="right">2.0%</td>
+                        <td text-align="left"><span style="display:none;">2</span><div style="width:20px;height:2ex;background:#aaa;color:inherit;background:teal">&nbsp;</div></td>
+                    </tr>
+
+                    <tr>
+                        <td text-align="center"><b>Z</b></td>
+                        <td text-align="right">0.074%</td>
+                        <td text-align="left"><span style="display:none;">0.074</span><div style="width:0.74px;height:2ex;background:#aaa;color:inherit;">&nbsp;</div></td>
+                    </tr>
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+
+  <!-- JavaScript Code -->
+  <script>
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+    // Setup graph table layout
+    function setupTable() {
+      const graphRow = document.getElementById("graphRow");
+      const percentRow = document.getElementById("percentRow");
+      const labelRow = document.getElementById("labelRow");
+      const substitutionRow = document.getElementById("substitutionRow");
+
+      graphRow.innerHTML = "";
+      percentRow.innerHTML = "";
+      labelRow.innerHTML = "";
+      substitutionRow.innerHTML = "";
+
+      alphabet.forEach(letter => {
+        // Graph column
+        const graphTd = document.createElement("td");
+        graphTd.innerHTML = `<div id="bar_${letter}" style="width: 20px; background-color: #4CAF50; margin: 2px auto 0; height: 0px;"></div>`;
+        graphRow.appendChild(graphTd);
+
+        // Percent text
+        const percentTd = document.createElement("td");
+        percentTd.id = "percent_" + letter;
+        percentTd.innerText = "";
+        percentTd.style.fontSize = "12px";
+        percentRow.appendChild(percentTd);
+
+        // Label row
+        const labelTd = document.createElement("td");
+        labelTd.innerText = letter;
+        labelRow.appendChild(labelTd);
+
+        // Substitution input
+        const inputTd = document.createElement("td");
+        inputTd.innerHTML = `<input type="text" id="sub_${letter}" maxlength="1" style="width: 20px; text-align: center;">`;
+        substitutionRow.appendChild(inputTd);
+      });
+    }
+
+    function frequencyAnalysis(text) {
+      setupTable();
+
+      const counts = {};
+      const total = text.toUpperCase().split("").reduce((acc, char) => {
+        if (alphabet.includes(char)) {
+          counts[char] = (counts[char] || 0) + 1;
+          return acc + 1;
+        }
+        return acc;
+      }, 0);
+
+      alphabet.forEach(letter => {
+        const count = counts[letter] || 0;
+        const percent = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+        const height = (percent * 2) + "px";
+
+        // Update bar height
+        const bar = document.getElementById("bar_" + letter);
+        if (bar) bar.style.height = height;
+
+        // Update percentage
+        const pct = document.getElementById("percent_" + letter);
+        if (pct) pct.innerText = count > 0 ? `${percent}%` : "";
+      });
+    }
+
+    function substituteLetters() {
+        const cipherText = document.getElementById("cipher").value;
+        const subMap = {};
+
+        alphabet.forEach(letter => {
+            const input = document.getElementById("sub_" + letter);
+            if (input && input.value) {
+                subMap[letter] = input.value.toUpperCase();
+            }
+        });
+
+        const plain = cipherText.split("").map(char => {
+            const upper = char.toUpperCase();
+            if (alphabet.includes(upper)) {
+                if (subMap[upper]) {
+                    return char === upper ? subMap[upper] : subMap[upper].toLowerCase();
+                } else {
+                    return '*';  // Replace non-substituted letters with *
+                }
+            }
+            return char;  // Keep spaces, punctuation, etc.
+        }).join("");
+
+      document.getElementById("plain").value = plain;
+    }
+
+    // Initialize layout on page load
+    window.onload = setupTable;
+  </script>
+
+</body>
+</html>
