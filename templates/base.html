@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}SecurePass{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js" defer></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+  <div x-data="{ open: false }">
+    <!-- Navbar -->
+    <nav class="bg-blue-600 text-white shadow-lg fixed w-full top-0 left-0 z-50">
+      <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+
+        <!-- Center: Website Name -->
+        <div class="absolute left-1/2 transform -translate-x-1/2">
+          <i class="fas fa-lock text-white text-2xl"></i>
+          <span class="text-2xl font-bold">SecurePass</span>
+        </div>
+
+        <!-- Right: Navigation Buttons -->
+        <div class="ml-auto flex space-x-4">
+          <a href="login.html" class="bg-white text-blue-500 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100">
+            Login
+          </a>
+          <a href="register.html" class="bg-white text-blue-500 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100">
+            Register
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24">
+      
+      
+      <!-- Hero Section -->
+      <section class="text-center py-20 bg-white">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 text-blue-600">Your Secure Password Vault</h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
+          Store and manage your passwords safely and access them anytime, anywhere.
+        </p>
+        <a href="service.html" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+          Explore Services
+        </a>
+      </section>
+
+      
+    </main>
+  </div>
+</body>
+</html>
