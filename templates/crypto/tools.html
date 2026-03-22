@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SecurePass | Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js" defer></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50">
+  <div x-data="{ open: false }">
+    <!-- Navbar -->
+    <nav class="bg-blue-600 text-white shadow-lg fixed w-full top-0 left-0 z-50">
+      <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+
+        <!-- Center: Website Name -->
+        <div class="absolute left-1/2 transform -translate-x-1/2">
+          <i class="fas fa-lock text-white text-2xl"></i>
+          <span class="text-2xl font-bold">SecurePass</span>
+        </div>
+
+        <!-- Right: Navigation Buttons -->
+        <div class="ml-auto flex space-x-4">
+          <a href="dashboard.html" class="bg-white text-blue-500 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100">
+            Home
+          </a>
+        </div>
+      </div>
+    </nav>
+    <!-- Page Content -->
+    <div class="pt-32 px-6 max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold mb-6 text-center text-blue-700">🔧 Tools</h1>
+
+      <!-- Password Generator -->
+      <div class="bg-white p-6 rounded-2xl shadow mb-10 border border-blue-200">
+        <h2 class="text-2xl font-semibold mb-4 text-blue-600">🔐 Password Generator</h2>
+        <div class="flex flex-col space-y-4">
+          <label class="text-gray-700">
+            Length: <input id="length" type="number" min="6" max="64" value="16" class="border p-2 rounded w-24 ml-2" />
+          </label>
+          <label class="text-gray-700"><input type="checkbox" id="uppercase" checked class="mr-2" /> Include Uppercase</label>
+          <label class="text-gray-700"><input type="checkbox" id="lowercase" checked class="mr-2" /> Include Lowercase</label>
+          <label class="text-gray-700"><input type="checkbox" id="numbers" checked class="mr-2" /> Include Numbers</label>
+          <label class="text-gray-700"><input type="checkbox" id="symbols" class="mr-2" /> Include Symbols</label>
+          <button onclick="generatePassword()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-max">Generate</button>
+          <div class="password-output bg-gray-100 p-3 rounded text-blue-700 font-mono" id="generatedPassword">Your password will appear here</div>
+        </div>
+      </div>
+
+      <!-- Password Strength Checker -->
+      <div class="bg-white p-6 rounded-2xl shadow border border-blue-200">
+        <h2 class="text-2xl font-semibold mb-4 text-blue-600">💪 Password Strength Checker</h2>
+        <input type="text" id="passwordInput" class="border p-3 w-full rounded mb-2" placeholder="Enter a password to check..." oninput="checkStrength()">
+        <div id="strengthOutput" class="font-bold text-lg"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function generatePassword() {
+      const length = parseInt(document.getElementById('length').value);
+      const useUpper = document.getElementById('uppercase').checked;
+      const useLower = document.getElementById('lowercase').checked;
+      const useNumbers = document.getElementById('numbers').checked;
+      const useSymbols = document.getElementById('symbols').checked;
+
+      let charset = '';
+      if (useUpper) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      if (useLower) charset += 'abcdefghijklmnopqrstuvwxyz';
+      if (useNumbers) charset += '0123456789';
+      if (useSymbols) charset += '!@#$%^&*()_+-={}[]<>?';
+
+      let password = '';
+      for (let i = 0; i < length; i++) {
+        const randIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randIndex];
+      }
+
+      document.getElementById('generatedPassword').textContent = password || 'Please select at least one character type.';
+    }
+
+    function checkStrength() {
+      const password = document.getElementById('passwordInput').value;
+      let score = 0;
+      if (password.length >= 8) score++;
+      if (/[A-Z]/.test(password)) score++;
+      if (/[a-z]/.test(password)) score++;
+      if (/[0-9]/.test(password)) score++;
+      if (/[^A-Za-z0-9]/.test(password)) score++;
+
+      const output = document.getElementById('strengthOutput');
+      const levels = ['Very Weak', 'Weak', 'Fair', 'Strong', 'Very Strong'];
+      output.textContent = password ? `Strength: ${levels[score - 1] || 'Very Weak'}` : '';
+      output.className = 'font-bold text-lg ' + (score >= 4 ? 'text-green-600' : score >= 2 ? 'text-yellow-600' : 'text-red-600');
+    }
+  </script>
+</body>
+</html>
