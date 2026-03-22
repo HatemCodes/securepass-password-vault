@@ -1,115 +1,148 @@
-# SecurePass — Encrypted Password Vault
 
-## 🧠 Overview
+# 🔐 SecurePass - Password Manager and Crypto Toolkit
 
-SecurePass is a full-stack web application designed to securely store and manage user passwords using multiple layers of encryption and authentication techniques.
-
-Developed as a final project for CPSC 329 (Cybersecurity), the system demonstrates practical implementation of modern security principles, including **public-key encryption, hashing, and secure credential handling**.
+SecurePass is a web-based application built for CPSC 329. It integrates user authentication, encrypted password storage, and cryptographic tools like Caesar and RSA encryption. The project is built using Flask and structured for both educational and practical demonstration of core security concepts.
 
 ---
 
-## 🔐 Key Features
+## 📁 Project Structure and File Descriptions
 
-* 🔑 **RSA Public-Key Encryption**
-  Encrypts sensitive password data using asymmetric cryptography
+### 🔧 Root Directory
 
-* 🔒 **SHA-256 Hashing with Salt**
-  Secures user credentials before storage
+- `api.py`: Main Flask server with all route definitions for pages, APIs, encryption tools, and vault logic.
+- `CredentialProcess.py`: Handles user credential storage using SHA-256 hashing with a fixed salt.
+- `users.json`: Stores hashed credentials of all registered users.
+- `vault_data.json`: Stores encrypted service credentials per user using Caesar cipher.
 
-* 🔄 **Custom Encryption Modules**
-  Includes Caesar cipher and RSA-based encryption/decryption logic
+### 📄 Templates Directory (HTML Frontend)
 
-* 👤 **Authentication System**
-  Login and registration with secure validation
+- `templates/base.html`: Main homepage UI.
+- `templates/auth/`: Login and Register page templates.
+- `templates/pm/`: User dashboard, vault management, and services UI.
+- `templates/crypto/`: Caesar and RSA encryption tool UIs.
 
-* 📦 **JSON-based Storage**
-  Structured storage of user credentials and vault data
+### 🔐 `app/crypto/`
 
-* 🌐 **REST API (Flask)**
-  Backend endpoints for encryption, authentication, and data handling
+- `caesar.py`: Contains Caesar cipher logic (encrypt/decrypt functions).
+- `rsa.py`: Contains RSA logic: key generation, encryption, and decryption.
 
----
+### 🧰 `app/utils/`
 
-## 🛠️ Tech Stack
+- `json_storage.py`: Utility to load, save, and generate unique IDs for vault entries.
 
-### Backend
+### 📦 Other Files
 
-* Python
-* Flask
-* Flask-CORS
-
-### Security & Cryptography
-
-* RSA Encryption
-* SHA-256 (hashlib)
-* Caesar Cipher
-
-### Data Handling
-
-* JSON storage
+- `requirements.txt`: Python dependencies required to run the app.
+- `.gitignore`: Prevents committing of unwanted files.
+- `.git/`: Git configuration and commit history folder.
 
 ---
 
-## 🏗️ System Design
+## ⚙️ How It Works
 
-The application follows a client-server architecture:
+### 🧾 User Authentication
 
-1. **Frontend Layer**
-   User interface for login, registration, and vault access
+- Users register or login using a username and password.
+- These credentials are **hashed with a fixed salt using SHA-256** and stored in `users.json`.
 
-2. **Backend Layer (Flask API)**
-   Handles authentication, encryption, and data storage
+### 🔐 Vault Management
 
-3. **Security Layer**
-   Applies hashing and encryption before storing or retrieving data
+- Each user can store multiple services (e.g., Gmail, Facebook).
+- For each service, the **username and password are encrypted** with Caesar cipher and stored in `vault_data.json`.
+- On retrieval, values are decrypted and displayed securely.
+
+### 🌀 Caesar Cipher Tool
+
+- Offers manual encryption/decryption based on a user-defined shift.
+- Accessible via the `/caesar.html` route.
+
+### 🛡️ RSA Tool
+
+- Generates public/private key pairs.
+- Allows users to encrypt and decrypt messages using the RSA algorithm.
+- Supports manual encryption via `/rsa.html`.
 
 ---
 
-## 🧪 Security Features
+## 🚀 Running the Project
 
-* Passwords are never stored in plaintext
-* Hashing with salt prevents rainbow table attacks
-* Encryption ensures secure storage and retrieval
-* Input validation protects against malformed data
-
----
-
-## 📁 Project Structure
+### Step 1: Clone the Repository
 
 ```bash
-securepass/
-│
-├── app.py
-├── users.json
-├── vault_data.json
-├── encryption/
-│   ├── rsa.py
-│   └── caesar.py
-│
-└── templates/
+git clone https://github.com/yourusername/cpsc-329-final-project.git
+cd cpsc-329-final-project
+```
+
+### Step 2: Set Up the Environment
+
+(Optional but recommended)
+
+```bash
+python -m venv venv
+source venv/bin/activate   # On Windows: venv\Scripts\activate
+```
+
+### Step 3: Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+> ⚠️ If encoding issues occur in `requirements.txt`, open the file and re-save it using UTF-8 encoding.
+
+### Step 4: Launch the App
+
+```bash
+python api.py
+```
+
+Go to `http://127.0.0.1:5000` in your browser.
+
+---
+
+## 🧪 Example Interactions
+
+### Registering a User
+
+```json
+POST /register
+{
+  "username": "hatemiscool",
+  "password": "testpass123"
+}
+```
+
+### Caesar API Usage
+
+```json
+POST /caesar
+{
+  "text": "secure",
+  "shift": 5,
+  "mode": "encrypt"
+}
+```
+
+### Saving a Vault Entry
+
+```json
+POST /vault
+{
+  "service": "Gmail",
+  "username": "hatemiscool@gmail.com",
+  "password": "mypassword123"
+}
 ```
 
 ---
 
-## 📚 References
+## 👨‍💻 Authors and Credits
 
-This project was built using guidance from multiple sources on web security, cryptography, and Flask development.
-
-See full citations:
-👉 
+- **Hatem C. , Yousif B. , Mcveigth B.** – Authentication and cryptography integration
+- **Rydon L. , Emily N.** – Add frontend/UI/database/etc.
 
 ---
 
-## 📈 Future Improvements
+## ⚠️ Disclaimer
 
-* Replace Caesar cipher with stronger encryption methods
-* Use a database instead of JSON storage
-* Implement token-based authentication (JWT)
-* Add HTTPS and deployment security layers
-
----
-
-## 👤 Author
-
-**Hatem Chehade**
-Computer Science Student @ University of Calgary
+This application is built for **educational purposes only**. It should NOT be used to store sensitive personal information. Use secure, industry-grade password managers for real-world needs.
