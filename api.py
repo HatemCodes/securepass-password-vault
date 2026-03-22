@@ -24,27 +24,27 @@ pwd = ""
 @app.route('/')
 @app.route('/base.html')
 def mainpage():
-    return render_template('templates/base.html')
+    return render_template('base.html')
 
 # Route: Dashboard page
 @app.route('/dashboard.html')
 def dashboard():
-    return render_template('templates/pm/dashboard.html', username = uname)
+    return render_template('pm/dashboard.html', username = uname)
 
 # Route: Service page
 @app.route('/service.html')
 def service():
-    return render_template('templates/pm/service.html')
+    return render_template('pm/service.html')
 
 # Route: Login page
 @app.route('/login.html')
 def login():
-    return render_template('templates/auth/login.html')
+    return render_template('auth/login.html')
 
 # Route: Register page
 @app.route('/register.html')
 def register():
-    return render_template('templates/auth/register.html')
+    return render_template('auth/register.html')
 
 # Route: Caesar cipher tool page
 @app.route('/caesar.html', methods=["GET", "POST"])
@@ -60,7 +60,7 @@ def caesar_page():
         elif action == "decrypt":
             result = caesar.decrypt(text, shift)
 
-    return render_template('templates/crypto/caesar.html', result=result)
+    return render_template('crypto/caesar.html', result=result)
 
 # API route: Caesar cipher encryption/decryption
 @app.route('/caesar', methods=["POST"])
@@ -83,7 +83,7 @@ def caesar_api():
 # Route: Frequency analysis tool page
 @app.route('/frequency.html')
 def frequency():
-    return render_template('templates/crypto/frequency.html')
+    return render_template('crypto/frequency.html')
 
 # Route: RSA encryption/decryption page
 @app.route('/rsa.html', methods=["GET", "POST"])
@@ -107,17 +107,17 @@ def rsa_page():
             d = int(request.form.get("d"))
             result = rsa.decrypt(eval(text), (n, d))  # Eval used for ciphertext list
 
-    return render_template('templates/crypto/rsa.html', result=result, keys=keys)
+    return render_template('crypto/rsa.html', result=result, keys=keys)
 
 # Route: Crypto tools page
 @app.route('/tools.html')
 def tools():
-    return render_template('templates/crypto/tools.html')
+    return render_template('crypto/tools.html')
 
 # Route: Vault frontend page
 @app.route('/vault.html')
 def vault():
-    return render_template('templates/pm/vault.html')
+    return render_template('pm/vault.html')
 
 # API route: Get vault data
 @app.route('/vault', methods=['GET'])
