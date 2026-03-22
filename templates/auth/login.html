@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Password Manager - Log In</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js" defer></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50">
+  <div x-data="{ open: false }">
+    <!-- Navbar -->
+    <nav class="bg-blue-600 text-white shadow-lg fixed w-full top-0 left-0 z-50">
+      <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+
+        <!-- Center: Website Name -->
+        <a href="{{ url_for('mainpage') }}" class="absolute left-1/2 transform -translate-x-1/2 flex items-center space-x-2 hover:opacity-90">
+          <i class="fas fa-lock text-white text-2xl"></i>
+          <span class="text-2xl font-bold">SecurePass</span>
+        </a>
+
+        <!-- Right: Navigation Buttons -->
+        <div class="ml-auto flex space-x-4">
+          <a href="register.html" class="bg-white text-blue-500 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100">
+            Register
+          </a>
+        </div>
+      </div>
+    </nav>
+
+
+    <!-- Main Content: Sign Up Form -->
+    <div class="flex items-center justify-center min-h-screen pt-24">
+      <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+        <h2 class="text-3xl font-bold text-center text-blue-500 mb-6">
+          Log In
+        </h2>
+        <form id="signupForm" class="space-y-6">
+          
+          <!-- Username Field -->
+          <div>
+            <label for="username" class="block text-gray-700 font-semibold mb-2">Username</label>
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              requiblue class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+          </div>
+
+          <!-- Password Field with Eye Toggle -->
+          <div x-data="{ show: false }">
+            <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
+            <div class="relative">
+              <input :type="show ? 'text' : 'password'" id="password" name="password" requiblue class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+              <button type="button" @click="show = !show" class="absolute right-3 top-2 text-gray-500">
+                <i :class="show ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg hover:bg-blue-600 transition">
+            Log In
+          </button>
+        </form>
+        <p id = "message" class="mt-4 text-center text-sm text-blue-600"></p>
+        <p id = "message2" class="mt-4 text-center text-sm text-blue-600"></p>
+
+        <p class="text-center text-gray-600 text-sm mt-6">
+          Don't have an account? <a href="register.html" class="text-blue-500 hover:underline">Create account</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("signupForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const uname = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      console.log(uname, password);
+
+      try{
+          const response = await fetch("/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({uname, password})
+          });
+
+          const data = await response.json();
+
+          if (response.ok){
+            // Manually redirect to the URL provided by the server
+            alert(data.message);  //gets the message and show it to the user
+            window.location.href = data.redirect_url;
+          } else if (response.status == 401){
+            document.getElementById("message").innerText = "Invalid credentials. Login failed!";
+          }
+
+        } catch (error){
+          console.error("Error during login: ", error)
+          document.getElementById("message").innerText = "An error occured. Please try again later." || data.error;
+        }
+      
+      
+    })
+  </script>
+
+</body>
+</html>
