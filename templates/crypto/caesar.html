@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SecurePass - Caesar Cipher</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js" defer></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50">
+  <div x-data="{ open: false }">
+    <!-- Navbar -->
+    <nav class="bg-blue-600 text-white shadow-lg fixed w-full top-0 left-0 z-50">
+      <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+
+        <!-- Center: Website Name -->
+        <div class="absolute left-1/2 transform -translate-x-1/2">
+          <i class="fas fa-lock text-white text-2xl"></i>
+          <span class="text-2xl font-bold">SecurePass</span>
+        </div>
+
+        <!-- Right: Navigation Buttons -->
+        <div class="ml-auto flex space-x-4">
+          <a href="dashboard.html" class="bg-white text-blue-500 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100">
+            Home
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content: Caesar Cipher Form -->
+    <div class="flex items-center justify-center min-h-screen pt-24">
+      <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+        <h2 class="text-3xl font-bold text-center text-blue-500 mb-6">
+          🔒Caesar Cipher Tool
+        </h2>
+        <form class="space-y-6" onsubmit="return false;">
+          <!-- Text Input -->
+          <div>
+            <label for="textInput" class="block text-gray-700 font-semibold mb-2">Text</label>
+            <input 
+              type="text" 
+              id="textInput" 
+              name="textInput" 
+              placeholder="Enter text to encrypt or decrypt"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <!-- Shift Input -->
+          <div>
+            <label for="shiftInput" class="block text-gray-700 font-semibold mb-2">Shift (1-25)</label>
+            <input 
+              type="number" 
+              id="shiftInput" 
+              name="shiftInput" 
+              min="1" 
+              max="25"
+              placeholder="Enter a number between 1-25"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex justify-center space-x-4">
+            <button 
+              type="button" 
+              onclick="encrypt()" 
+              class="bg-blue-500 text-white font-semibold px-6 py-2 rounded-lg hover:bg-blue-600 transition">
+              Encrypt
+            </button>
+            <button 
+              type="button" 
+              onclick="decrypt()" 
+              class="bg-green-500 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-600 transition">
+              Decrypt
+            </button>
+          </div>
+
+          <!-- Output -->
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Result</label>
+            <output 
+              id="resultOutput" 
+              class="block w-full p-4 border rounded-lg bg-gray-100 text-gray-800 min-h-[3rem]">
+            </output>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+ 
+  <script>
+    async function sendCaesarData(mode) {
+      const text = document.getElementById("textInput").value.trim();
+      const shift = parseInt(document.getElementById("shiftInput").value.trim());
+  
+      if (!text || isNaN(shift) || shift < 1 || shift > 25) {
+        alert("Please enter valid text and a shift between 1 and 25.");
+        return;
+      }
+  
+      try {
+        const response = await fetch("/caesar", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ text, shift, mode })
+        });
+  
+        const data = await response.json();
+        if (response.ok) {
+          document.getElementById("resultOutput").textContent = data.result;
+        } else {
+          alert(data.error || "An error occurred.");
+        }
+  
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error connecting to server.");
+      }
+    }
+  
+    function encrypt() {
+      sendCaesarData("encrypt");
+    }
+  
+    function decrypt() {
+      sendCaesarData("decrypt");
+    }
+  </script>
+</body>
+</html>
