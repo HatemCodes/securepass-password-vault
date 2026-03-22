@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecurePass - RSA Encryption Tool</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsencrypt/bin/jsencrypt.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- Navbar -->
+  <nav class="bg-blue-600 text-white shadow-lg fixed w-full top-0 left-0 z-50">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="absolute left-1/2 transform -translate-x-1/2">
+        <i class="fas fa-lock text-white text-2xl"></i>
+        <span class="text-2xl font-bold">SecurePass</span>
+      </div>
+      <div class="ml-auto flex space-x-4">
+        <a href="dashboard.html" class="bg-white text-blue-500 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100">
+          Home
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="pt-28 px-6 max-w-6xl mx-auto space-y-8">
+    <h1 class="text-3xl font-bold text-blue-600 text-center">🔑 RSA Encryption/Decryption</h1>
+
+    <!-- Key Display Section -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="bg-white p-6 rounded-xl shadow border border-blue-200">
+        <h2 class="text-xl font-semibold text-blue-500 mb-2">Public Key</h2>
+        <textarea id="publicKey" rows="6" class="w-full border rounded p-2 text-sm font-mono"></textarea>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow border border-blue-200">
+        <h2 class="text-xl font-semibold text-blue-500 mb-2">Private Key</h2>
+        <textarea id="privateKey" rows="6" class="w-full border rounded p-2 text-sm font-mono"></textarea>
+      </div>
+    </section>
+
+    <!-- Encryption / Decryption -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Encrypt -->
+      <div class="bg-white p-6 rounded-xl shadow border border-blue-200">
+        <h2 class="text-xl font-semibold text-blue-500 mb-2">Encrypt</h2>
+        <input type="text" id="message" value="Test message" class="w-full border rounded p-2 text-sm mb-4" placeholder="Enter message to encrypt">
+        <button onclick="encryptMessage()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition w-full">
+          Encrypt with Public Key
+        </button>
+        <label class="block text-sm mt-4 mb-1 text-blue-600 font-semibold">Encrypted Output</label>
+        <textarea id="encrypted" rows="5" class="w-full border rounded p-2 text-sm font-mono" readonly></textarea>
+      </div>
+
+      <!-- Decrypt -->
+      <div class="bg-white p-6 rounded-xl shadow border border-blue-200">
+        <h2 class="text-xl font-semibold text-blue-500 mb-2">Decrypt</h2>
+        <button onclick="decryptMessage()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition w-full">
+          Decrypt with Private Key
+        </button>
+        <label class="block text-sm mt-4 mb-1 text-blue-600 font-semibold">Decrypted Output</label>
+        <textarea id="decrypted" rows="5" class="w-full border rounded p-2 text-sm font-mono" readonly></textarea>
+      </div>
+    </section>
+
+    <p class="text-center text-gray-600 text-sm pt-8 pb-4">
+      🔐 This tool is inspired by the RSA encryption format from <a href="https://www.devglan.com/online-tools/rsa-encryption-decryption" class="text-blue-500 underline" target="_blank">Devglan</a>. No data is stored or transmitted.
+    </p>
+  </main>
+
+  <script>
+    function encryptMessage() {
+      const publicKey = document.getElementById("publicKey").value;
+      const message = document.getElementById("message").value;
+      const encryptor = new JSEncrypt();
+      encryptor.setPublicKey(publicKey);
+      const encrypted = encryptor.encrypt(message);
+      document.getElementById("encrypted").value = encrypted || "Encryption failed.";
+    }
+
+    function decryptMessage() {
+      const privateKey = document.getElementById("privateKey").value;
+      const encrypted = document.getElementById("encrypted").value;
+      const decryptor = new JSEncrypt();
+      decryptor.setPrivateKey(privateKey);
+      const decrypted = decryptor.decrypt(encrypted);
+      document.getElementById("decrypted").value = decrypted || "Decryption failed.";
+    }
+  </script>
+</body>
+</html>
