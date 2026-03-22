@@ -80,7 +80,10 @@ securepass-password-vault/
 ---
 
 ## ▶️ Running Locally
-
+### First, install zip file
+#### Second, extract all from zip file
+##### Third, open the file in terminal
+- Then run these commands
 ```bash
 pip install -r requirements.txt
 python api.py
