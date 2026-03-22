@@ -1,148 +1,113 @@
+# 🔐 SecurePass — Encrypted Password Vault & Crypto Toolkit
 
-# 🔐 SecurePass - Password Manager and Crypto Toolkit
+## 🧠 Overview
 
-SecurePass is a web-based application built for CPSC 329. It integrates user authentication, encrypted password storage, and cryptographic tools like Caesar and RSA encryption. The project is built using Flask and structured for both educational and practical demonstration of core security concepts.
+SecurePass is a full-stack web application designed to securely store and manage user credentials while demonstrating core cybersecurity concepts such as hashing, encryption, and secure authentication.
 
----
-
-## 📁 Project Structure and File Descriptions
-
-### 🔧 Root Directory
-
-- `api.py`: Main Flask server with all route definitions for pages, APIs, encryption tools, and vault logic.
-- `CredentialProcess.py`: Handles user credential storage using SHA-256 hashing with a fixed salt.
-- `users.json`: Stores hashed credentials of all registered users.
-- `vault_data.json`: Stores encrypted service credentials per user using Caesar cipher.
-
-### 📄 Templates Directory (HTML Frontend)
-
-- `templates/base.html`: Main homepage UI.
-- `templates/auth/`: Login and Register page templates.
-- `templates/pm/`: User dashboard, vault management, and services UI.
-- `templates/crypto/`: Caesar and RSA encryption tool UIs.
-
-### 🔐 `app/crypto/`
-
-- `caesar.py`: Contains Caesar cipher logic (encrypt/decrypt functions).
-- `rsa.py`: Contains RSA logic: key generation, encryption, and decryption.
-
-### 🧰 `app/utils/`
-
-- `json_storage.py`: Utility to load, save, and generate unique IDs for vault entries.
-
-### 📦 Other Files
-
-- `requirements.txt`: Python dependencies required to run the app.
-- `.gitignore`: Prevents committing of unwanted files.
-- `.git/`: Git configuration and commit history folder.
+Originally developed for CPSC 329 (Cybersecurity), this project was extended into a **portfolio-ready system** showcasing real-world implementations of encryption workflows and backend security design.
 
 ---
 
-## ⚙️ How It Works
+## 🚀 Features
 
-### 🧾 User Authentication
+* 🔐 **Secure Authentication**
 
-- Users register or login using a username and password.
-- These credentials are **hashed with a fixed salt using SHA-256** and stored in `users.json`.
+  * Passwords hashed using SHA-256 with salting
+  * No plaintext credential storage
 
-### 🔐 Vault Management
+* 🔑 **Encrypted Password Vault**
 
-- Each user can store multiple services (e.g., Gmail, Facebook).
-- For each service, the **username and password are encrypted** with Caesar cipher and stored in `vault_data.json`.
-- On retrieval, values are decrypted and displayed securely.
+  * Store and manage service credentials
+  * Caesar-based encryption for stored data
+  * Secure retrieval and decryption
 
-### 🌀 Caesar Cipher Tool
+* 🧠 **Cryptography Tools**
 
-- Offers manual encryption/decryption based on a user-defined shift.
-- Accessible via the `/caesar.html` route.
+  * Caesar Cipher (encrypt/decrypt + analysis)
+  * RSA Encryption (key generation + message encryption)
+  * Frequency Analysis
 
-### 🛡️ RSA Tool
+* 🌐 **Full Web Application**
 
-- Generates public/private key pairs.
-- Allows users to encrypt and decrypt messages using the RSA algorithm.
-- Supports manual encryption via `/rsa.html`.
+  * Flask backend (REST-style routes)
+  * Interactive frontend using HTML + Tailwind CSS
+  * Dynamic UI with Alpine.js
 
 ---
 
-## 🚀 Running the Project
+## 🏗️ Architecture
 
-### Step 1: Clone the Repository
+The system follows a modular client-server design:
+
+* **Frontend (Templates)**
+  Handles user interaction, forms, and visualization
+
+* **Backend (Flask API)**
+  Processes authentication, encryption, and vault logic
+
+* **Security Layer**
+  Applies hashing and encryption before data storage
+
+* **Storage Layer**
+  JSON-based persistence for users and vault entries
+
+---
+
+## 🛠️ Tech Stack
+
+* **Backend:** Python, Flask, Flask-CORS
+* **Frontend:** HTML, Tailwind CSS, Alpine.js
+* **Security:** SHA-256, Caesar Cipher, RSA, AES (module included)
+* **Storage:** JSON
+
+---
+
+## 📁 Project Structure
 
 ```bash
-git clone https://github.com/yourusername/cpsc-329-final-project.git
-cd cpsc-329-final-project
+securepass-password-vault/
+├── api.py
+├── CredentialProcess.py
+├── requirements.txt
+├── users.json
+├── vault_data.json
+├── app/
+│   ├── crypto/
+│   └── utils/
+├── templates/
 ```
 
-### Step 2: Set Up the Environment
+---
 
-(Optional but recommended)
-
-```bash
-python -m venv venv
-source venv/bin/activate   # On Windows: venv\Scripts\activate
-```
-
-### Step 3: Install Dependencies
+## ▶️ Running Locally
 
 ```bash
 pip install -r requirements.txt
-```
-
-> ⚠️ If encoding issues occur in `requirements.txt`, open the file and re-save it using UTF-8 encoding.
-
-### Step 4: Launch the App
-
-```bash
 python api.py
 ```
 
-Go to `http://127.0.0.1:5000` in your browser.
+Then open:
+👉 http://127.0.0.1:5000
 
 ---
 
-## 🧪 Example Interactions
+## 🧪 Example Use Cases
 
-### Registering a User
-
-```json
-POST /register
-{
-  "username": "hatemiscool",
-  "password": "testpass123"
-}
-```
-
-### Caesar API Usage
-
-```json
-POST /caesar
-{
-  "text": "secure",
-  "shift": 5,
-  "mode": "encrypt"
-}
-```
-
-### Saving a Vault Entry
-
-```json
-POST /vault
-{
-  "service": "Gmail",
-  "username": "hatemiscool@gmail.com",
-  "password": "mypassword123"
-}
-```
-
----
-
-## 👨‍💻 Authors and Credits
-
-- **Hatem C. , Yousif B. , Mcveigth B.** – Authentication and cryptography integration
-- **Rydon L. , Emily N.** – Add frontend/UI/database/etc.
+* Register/login securely
+* Store encrypted credentials in vault
+* Perform encryption using Caesar or RSA tools
+* Analyze ciphertext with frequency tools
 
 ---
 
 ## ⚠️ Disclaimer
 
-This application is built for **educational purposes only**. It should NOT be used to store sensitive personal information. Use secure, industry-grade password managers for real-world needs.
+This project is intended for **educational and demonstration purposes only**.
+It should not be used to store sensitive real-world credentials.
+
+---
+
+## 👤 Author
+
+**Hatem Chehade**
+Computer Science Student @ University of Calgary
